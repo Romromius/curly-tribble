@@ -27,14 +27,16 @@ async def send_welcome(message):
 async def echo_all(message):
     for session in sessions:
         if session[0] == message.from_user.id:
-            await bot.send_message(message.from_user.id, 'Ваше обращение сохранено.')
+            await bot.send_message(message.from_user.id, 'Ваше обращение сохранено.\n'
+                                                         'Вы можете отправить новое обращение.')
             sessions.remove(session)
             cur.execute(f'INSERT INTO responses VALUES(NULL, {session[0]}, "{session[1]}", "{message.text}")')
             db.commit()
             print('Новое обращение от', message.from_user.username)
             return
     sessions.append([message.from_user.id, message.text])
-    await bot.send_message(message.from_user.id, 'Теперь отправьте текст вашего обращения.')
+    await bot.send_message(message.from_user.id, 'Теперь отправьте текст вашего обращения.\n'
+                                                 'Если вы передумали, отправьте /start')
 
 
 asyncio.run(bot.polling())
