@@ -31,6 +31,7 @@ async def echo_all(message):
             sessions.remove(session)
             cur.execute(f'INSERT INTO responses VALUES(NULL, {session[0]}, "{session[1]}", "{message.text}")')
             db.commit()
+            print('Новое обращение от', message.from_user.username)
             return
     sessions.append([message.from_user.id, message.text])
     await bot.send_message(message.from_user.id, 'Теперь отправьте текст вашего обращения.')
